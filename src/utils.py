@@ -9,7 +9,6 @@ from bert_tokenizer import tokenize
 from sklearn.metrics import f1_score, confusion_matrix
 from statsmodels.stats.inter_rater import cohens_kappa
 from transformers import BertTokenizer
-from loss.ce_logits_loss import CELogitsLoss
 from constants import *
 
 def get_weighted_f1_weights(train_path_or_csv):
@@ -201,44 +200,6 @@ def compute_uncertain_f1(y_true, y_pred):
     res.append(0) #No Finding gets a score of zero
     return res
 
-def evaluate_logits(model, dev_loader, device, temp):
-    """
-    @param model (nn.Module): the labeler module 
-    @param dev_loader (torch.utils.data.DataLoader): dataloader for dev set  
-    @param device (torch.device): device on which data should be
-    @param temp (float): temperature parameter for ce loss
-
-    @returns dev_loss (float): total loss across dev set
-    """
-    was_training = model.training
-    model.eval()
-
-    loss_func = CELogitsLoss(temp=temp)
-
-    dev_loss = 0.0
-    with torch.no_grad():
-        for i, data in enumerate(dev_loader, 0):
-            batch = data['imp'] #(batch_size, max_len)
-            batch = batch.to(device)
-            logits_13 = data['logits_13'] #(batch_size, 13, 4)
-            logits_no_finding = data['logits_no_finding'] #(batch_size, 2)
-            logits_13 = logits_13.permute(1, 0, 2).to(device)
-            logits_no_finding = logits_no_finding.to(device)
-            src_len = data['len']
-            batch_size = batch.shape[0]
-
-            attn_mask = generate_attention_masks(batch, src_len, device)
-            out = model(batch, attn_mask) #list of 14 tensors
-        
-            for j in range(len(out)-1):
-                dev_loss += loss_func(out[j], logits_13[j])
-            dev_loss += loss_func(out[-1], logits_no_finding)
-
-    if was_training:
-        model.train()
-
-    return dev_loss
-
 def evaluate(model, dev_loader, device, f1_weights, return_pred=False):
     """ Function to evaluate the current model weights
     @param model (nn.Module): the labeler module 
@@ -319,49 +280,6 @@ def evaluate(model, dev_loader, device, f1_weights, return_pred=False):
         return res_dict, y_pred, y_true
     else:
         return res_dict
-
-def save_logits(model, loader, device, save_path):
-    """ Function to save the logits from model evaluated on a set
-    @param model (nn.Module): the labeler module 
-    @param loader (torch.utils.data.DataLoader): dataloader for set  
-    @param device (torch.device): device on which data should be
-    @param save_path (str): path to save logits to
-
-    @returns y_pred (list): list of logits of size (14, num_examples, 4 or 2)
-    """
-    was_training = model.training
-    model.eval()
-    y_pred = [[] for _ in range(len(CONDITIONS))]
-
-    with torch.no_grad():
-        for i, data in enumerate(loader, 0):
-            batch = data['imp'] #(batch_size, max_len)
-            batch = batch.to(device)
-            src_len = data['len']
-            batch_size = batch.shape[0]
-            attn_mask = generate_attention_masks(batch, src_len, device)
-
-            out = model(batch, attn_mask)
-
-            for j in range(len(out)):
-                curr_y_pred = out[j] #shape is (batch_size, 4 or 2)
-                y_pred[j].append(curr_y_pred)
-
-            if (i+1) % 500 == 0:
-                print("Batch %d processed" % (i+1))
-
-    #shape of y_pred i (14, num_batches, batch_size, 4 or 2)
-    for j in range(len(y_pred)):
-        y_pred[j] = torch.cat(y_pred[j], dim=0)
-
-    if was_training:
-        model.train()
-
-    y_pred = [elt.tolist() for elt in y_pred]
-    with open(save_path, 'w') as filehandle:
-        json.dump(y_pred, filehandle)
-    
-    return y_pred
 
 def test(model, checkpoint_path, test_ld, f1_weights):
     """Evaluate model on test set. 
