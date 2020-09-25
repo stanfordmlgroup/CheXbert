@@ -1,10 +1,10 @@
-NUM_EPOCHS = 80
-BATCH_SIZE = 18    #Refer to load_data docstring before changing this!
+NUM_EPOCHS = 8
+BATCH_SIZE = 18    #Change this depending on GPU memory
 NUM_WORKERS = 4    #A value of 0 means the main process loads the data
 LEARNING_RATE = 2e-5
 PAD_IDX = 0        #padding index as required by the tokenizer
 LOG_EVERY = 200    #iterations after which to log status
-VALID_NITER = 2000 #iterations after which to evaluate model and possibly save
+VALID_NITER = 2000 #iterations after which to evaluate model and possibly save (if dev performance is a new max)
 TEMP = 1.0         #softmax temperature for self training
 
 #CONDITIONS is a list of all 14 medical observations 
