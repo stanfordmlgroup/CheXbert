@@ -23,23 +23,42 @@ By default, all available GPU's will be used for labeling in parallel. If there 
 
 ## Usage
 
-Put all reports in a csv file under the column name "Report Impression". Let the absolute path to this csv be {path to reports}. Download the pytorch checkpoint and let the absolute path to it be {path to checkpoint}. Let the absolute path to your desired output folder by {path to output dir}. 
+Put all reports in a csv file under the column name "Report Impression". Let the path to this csv be {path to reports}. Download the pytorch checkpoint and let the path to it be {path to checkpoint}. Let the path to your desired output folder by {path to output dir}. 
 
-- python label.py -d={path to reports} -o={path to output dir} -c={path to checkpoint} 
+```
+python label.py -d={path to reports} -o={path to output dir} -c={path to checkpoint} 
+```
 
 The output file with labeled reports is {path to output dir}/labeled_reports.csv
 
 Run the following for descriptions of all command line arguments:
 
+```
 - python label.py -h
+```
 
 ** Ignore any error messages about the size of the report exceeding 512 tokens. All reports are automatically cut off at 512 tokens. **
 
 # Label Convention
 
-The labeler outputs the following numbers corresponding to classes:
+The labeler outputs the following numbers corresponding to classes. This convention is the same as that of the CheXpert labeler.
 
-- Blank: 0
+- Blank: NaN
 - Positive: 1
-- Negative: 2
-- Uncertain: 3
+- Negative: 0
+- Uncertain: -1
+
+# Citation
+
+If you use the CheXbert labeler in your work, please cite our paper:
+
+```
+@misc{smit2020chexbert,
+	title={CheXbert: Combining Automatic Labelers and Expert Annotations for Accurate Radiology Report Labeling Using BERT},
+	author={Akshay Smit and Saahil Jain and Pranav Rajpurkar and Anuj Pareek and Andrew Y. Ng and Matthew P. Lungren},
+	year={2020},
+	eprint={2004.09167},
+	archivePrefix={arXiv},
+	primaryClass={cs.CL}
+}
+```
