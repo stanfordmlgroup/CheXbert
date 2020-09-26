@@ -120,6 +120,11 @@ def save_preds(y_pred, csv_path, out_path):
     df['Report Impression'] = reports.tolist()
     new_cols = ['Report Impression'] + CONDITIONS
     df = df[new_cols]
+
+    df.replace(0, np.nan, inplace=True) #blank class is NaN
+    df.replace(3, -1, inplace=True)     #uncertain class is -1
+    df.replace(2, 0, inplace=True)      #negative class is 0 
+    
     df.to_csv(os.path.join(out_path, 'labeled_reports.csv'), index=False)
 
 if __name__ == '__main__':
