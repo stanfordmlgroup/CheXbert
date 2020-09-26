@@ -13,15 +13,21 @@ The extraction of labels from radiology text reports enables large-scale trainin
 
 Create conda environment
 
-- conda env create -f environment.yml
+```
+conda env create -f environment.yml
+```
 
 Activate environment
 
-- conda activate chexbert
+```
+conda activate chexbert
+```
 
 By default, all available GPU's will be used for labeling in parallel. If there is no GPU, the CPU is used. You can control which GPU's are used by appropriately setting CUDA_VISIBLE_DEVICES. The batch size by default is 18, but can be changed inside constants.py
 
 ## Usage
+
+### Label reports with CheXbert
 
 Put all reports in a csv file under the column name "Report Impression". Let the path to this csv be {path to reports}. Download the pytorch checkpoint and let the path to it be {path to checkpoint}. Let the path to your desired output folder by {path to output dir}. 
 
@@ -34,10 +40,20 @@ The output file with labeled reports is {path to output dir}/labeled_reports.csv
 Run the following for descriptions of all command line arguments:
 
 ```
-- python label.py -h
+python label.py -h
 ```
 
 ** Ignore any error messages about the size of the report exceeding 512 tokens. All reports are automatically cut off at 512 tokens. **
+
+### Train a model on labeled reports
+
+Put all train/dev set reports in csv files under the column name "Report Impression". The labels for each of the 14 conditions should be in columns with the corresponding names, and the class labels should follow the convention described in this README.
+
+Training is a two-step process. First, you must tokenize and save all the report impressions in the train and dev sets:
+
+```
+python bert_tokenizer.py 
+'''
 
 # Label Convention
 
