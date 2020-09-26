@@ -5,7 +5,6 @@ LEARNING_RATE = 2e-5
 PAD_IDX = 0        #padding index as required by the tokenizer
 LOG_EVERY = 200    #iterations after which to log status
 VALID_NITER = 2000 #iterations after which to evaluate model and possibly save (if dev performance is a new max)
-TEMP = 1.0         #softmax temperature for self training
 
 #CONDITIONS is a list of all 14 medical observations 
 CONDITIONS = ['Enlarged Cardiomediastinum', 'Cardiomegaly', 'Lung Opacity',
