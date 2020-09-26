@@ -1,4 +1,5 @@
 import os
+import argparse
 import time
 import torch
 import torch.nn as nn
@@ -118,7 +119,7 @@ def train(save_path, dataloaders, f1_weights, model=None, device=None,
           return
      
      if model is None:
-          model = bert_labeler(pretrain_path='/data3/aihc-winter20-chexbert/bluebert/pretrain_repo')
+          model = bert_labeler(pretrain_path=PRETRAIN_PATH)
           model.train()   #put the model into train mode
           device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
           if torch.cuda.device_count() > 1:
@@ -221,27 +222,37 @@ def model_from_ckpt(model, ckpt_path):
      return (model, optimizer, device)
 
 if __name__ == '__main__':
-     #TRAIN ON LABELS
-     #checkpoint_path = '/data3/aihc-winter20-chexbert/bluebert/mimic_reports/labeler_ckpt/auto/model_epoch6_iter8000'
-     #model, optimizer, device = model_from_ckpt(bert_labeler(), checkpoint_path)
-     #f1_weights = utils.get_weighted_f1_weights('/data3/aihc-winter20-chexbert/MIMIC-CXR/mimic_1001/dev_beamx1_chexpert_modified.csv')
-     #dataloaders = load_data('/data3/aihc-winter20-chexbert/MIMIC-CXR/mimic_1001/train_beamx1_chexpert_modified.csv',
-     #                        '/data3/aihc-winter20-chexbert/bluebert/impressions_lists/mimic_1001/train_beamx1',
-     #                        '/data3/aihc-winter20-chexbert/MIMIC-CXR/mimic_1001/dev_beamx1_chexpert_modified.csv',
-     #                        '/data3/aihc-winter20-chexbert/bluebert/impressions_lists/mimic_1001/dev_beamx1') 
-     #train(save_path='/data3/aihc-winter20-chexbert/bluebert/mimic_reports/labeler_ckpt/auto_1001_bt',
-     #      dataloaders=dataloaders,
-     #      model=model,
-     #      optimizer=optimizer,
-     #      device=device,
-     #      valid_niter=np.ceil(1500/BATCH_SIZE),
-     #      f1_weights=f1_weights)
+     parser = argparse.ArgumentParser(description='Train BERT-base model on task of labeling 14 medical conditions.')
+     parser.add_argument('--train_csv', type=str, nargs='?', required=True,
+                         help='path to csv containing train reports.')
+     parser.add_argument('--dev_csv', type=str, nargs='?', required=True,
+                         help='path to csv containing dev reports.')
+     parser.add_argument('--train_imp_list', type=str, nargs='?', required=True,
+                         help='path to list of tokenized train set report impressions')
+     parser.add_argument('--dev_imp_list', type=str, nargs='?', required=True,
+                         help='path to list of tokenized dev set report impressions')
+     parser.add_argument('--output_dir', type=str, nargs='?', required=True,
+                         help='path to output directory where checkpoints will be saved')
+     parser.add_argument('--checkpoint', type=str, nargs='?', required=False,
+                         help='path to existing checkpoint to initialize weights from')
+     args = parser.parse_args()
+     train_csv_path = args.train_csv
+     dev_csv_path = args.dev_csv
+     train_imp_path = args.train_imp_list
+     dev_imp_path = args.dev_imp_list
+     out_path = args.output_dir
+     checkpoint_path = args.checkpoint
 
-
-     #TEST
-     model = bert_labeler()
-     checkpoint_path = '/data3/aihc-winter20-chexbert/bluebert/mimic_reports/labeler_ckpt/auto_1001_bt/model_epoch43_iter84'
-     test_loader = load_test_data('/data3/aihc-winter20-chexbert/chexpert_data/master_test.csv',
-                                  '/data3/aihc-winter20-chexbert/bluebert/impressions_lists/test_impressions_list')
-     f1_weights = utils.get_weighted_f1_weights('/data3/aihc-winter20-chexbert/chexpert_data/master_test.csv')
-     utils.test(model, checkpoint_path, test_loader, f1_weights)
+     if checkpoint_path:
+          model, optimizer, device = model_from_ckpt(bert_labeler(), checkpoint_path)
+     else:
+          model, optimizer, device = None, None, None
+     f1_weights = utils.get_weighted_f1_weights(dev_csv_path)
+     dataloaders = load_data(train_csv_path, train_imp_path, dev_csv_path, dev_imp_path)
+     train(save_path=out_path,
+           dataloaders=dataloaders,
+           model=model,
+           optimizer=optimizer,
+           device=device, 
+           f1_weights=f1_weights)
+     
