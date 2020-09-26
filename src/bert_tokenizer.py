@@ -1,8 +1,9 @@
 import pandas as pd
-import transformers
 from transformers import BertTokenizer, AutoTokenizer
+import os
 import json
 from tqdm import tqdm
+import argparse
 
 def get_impressions_from_csv(path):	
         df = pd.read_csv(path)
@@ -34,22 +35,19 @@ def load_list(path):
                 return impressions
 
 if __name__ == "__main__":
-        tokenizer = BertTokenizer.from_pretrained('/data3/aihc-winter20-chexbert/bluebert/pretrain_repo')
-        #tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
-        #tokenizer = AutoTokenizer.from_pretrained("emilyalsentzer/Bio_ClinicalBERT")
-        #tokenizer = AutoTokenizer.from_pretrained('xlnet-base-cased')
+        parser = argparse.ArgumentParser(description='Tokenize radiology report impressions and save as a list.')
+        parser.add_argument('-d', '--data', type=str, nargs='?', required='True',
+                            help='path to csv containing reports. The reports should be \
+                            under the \"Report Impression\" column')
+        parser.add_argument('-o', '--output_dir', type=str, nargs='?', required='True',
+                                                    help='path to intended output folder')
+        args = parser.parse_args()
+        csv_path = args.data
+        out_path = args.output_dir
         
-        #impressions = get_impressions_from_csv('/data3/aihc-winter20-chexbert/chexpert_data/master_train.csv')
-        #new_impressions = tokenize(impressions, tokenizer)
-        #with open('/data3/aihc-winter20-chexbert/bluebert/impressions_lists/train_impressions_list', 'w') as filehandle:
-        #        json.dump(new_impressions, filehandle)
+        tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
 
-        #impressions = get_impressions_from_csv('/data3/aihc-winter20-chexbert/chexpert_data/master_dev.csv')
-        #new_impressions = tokenize(impressions, tokenizer)
-        #with open('/data3/aihc-winter20-chexbert/bluebert/impressions_lists/dev_impressions_list', 'w') as filehandle:
-        #        json.dump(new_impressions, filehandle)
-
-        impressions = get_impressions_from_csv('/data3/aihc-winter20-chexbert/MIMIC-CXR/mimic_686/train_beamx1.csv')
+        impressions = get_impressions_from_csv(csv_path)
         new_impressions = tokenize(impressions, tokenizer)
-        with open('/data3/aihc-winter20-chexbert/bluebert/impressions_lists/mimic_686/train_beamx1', 'w') as filehandle:
+        with open(os.path.join(out_path, 'impressions_list'), 'w') as filehandle:
                 json.dump(new_impressions, filehandle)
