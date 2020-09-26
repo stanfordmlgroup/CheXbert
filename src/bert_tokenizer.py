@@ -36,11 +36,11 @@ def load_list(path):
 
 if __name__ == "__main__":
         parser = argparse.ArgumentParser(description='Tokenize radiology report impressions and save as a list.')
-        parser.add_argument('-d', '--data', type=str, nargs='?', required='True',
+        parser.add_argument('-d', '--data', type=str, nargs='?', required=True,
                             help='path to csv containing reports. The reports should be \
                             under the \"Report Impression\" column')
-        parser.add_argument('-o', '--output_dir', type=str, nargs='?', required='True',
-                                                    help='path to intended output folder')
+        parser.add_argument('-o', '--output_dir', type=str, nargs='?', required=True,
+                            help='path to intended output folder')
         args = parser.parse_args()
         csv_path = args.data
         out_path = args.output_dir

@@ -124,12 +124,12 @@ def save_preds(y_pred, csv_path, out_path):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Label a csv file containing radiology reports')
-    parser.add_argument('-d', '--data', type=str, nargs='?', required='True',
+    parser.add_argument('-d', '--data', type=str, nargs='?', required=True,
                         help='path to csv containing reports. The reports should be \
                               under the \"Report Impression\" column')
-    parser.add_argument('-o', '--output_dir', type=str, nargs='?', required='True',
+    parser.add_argument('-o', '--output_dir', type=str, nargs='?', required=True,
                         help='path to intended output folder')
-    parser.add_argument('-c', '--checkpoint', type=str, nargs='?', required='True',
+    parser.add_argument('-c', '--checkpoint', type=str, nargs='?', required=True,
                         help='path to the pytorch checkpoint')
     args = parser.parse_args()
     csv_path = args.data
