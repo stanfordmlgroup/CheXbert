@@ -57,7 +57,7 @@ Training is a two-step process. First, you must tokenize and save all the report
 python bert_tokenizer.py -d={path to train/dev reports csv} -o={path to output list}
 ```
 
-After having saved the tokenized report impressions lists for the train and dev sets, you can run training as follows:
+After having saved the tokenized report impressions lists for the train and dev sets, you can run training as follows. You can modify the batch size or learning rate in ```constants.py```
 
 ```
 python run_bert.py --train_csv={path to train reports csv} --dev_csv={path to dev reports csv} --train_imp_list={path to train impressions list} --dev_imp_list={path to dev impressions list} --output_dir={path to checkpoint saving directory}
@@ -68,6 +68,8 @@ The above command will initialize BERT-base weights and then train the model. If
 ```
 python run_bert.py --train_csv={path to train reports csv} --dev_csv={path to dev reports csv} --train_imp_list={path to train impressions list} --dev_imp_list={path to dev impressions list} --output_dir={path to checkpoint saving directory} --checkpoint={path to existing CheXbert checkpoint}
 ```
+
+If you want to initialize the model with BlueBERT or BioBERT weights (or potentially any other pretrained weights) then you should download their checkpoints, convert them to pytorch using the HuggingFace transformers command line utility, and provide the path to the checkpoint folder in the ```PRETRAIN_PATH``` variable in ```constants.py```.
 
 # Label Convention
 
