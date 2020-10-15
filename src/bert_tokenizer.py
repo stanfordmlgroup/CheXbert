@@ -1,6 +1,5 @@
 import pandas as pd
 from transformers import BertTokenizer, AutoTokenizer
-import os
 import json
 from tqdm import tqdm
 import argparse
@@ -39,15 +38,15 @@ if __name__ == "__main__":
         parser.add_argument('-d', '--data', type=str, nargs='?', required=True,
                             help='path to csv containing reports. The reports should be \
                             under the \"Report Impression\" column')
-        parser.add_argument('-o', '--output_dir', type=str, nargs='?', required=True,
-                            help='path to intended output folder')
+        parser.add_argument('-o', '--output_path', type=str, nargs='?', required=True,
+                            help='path to intended output file')
         args = parser.parse_args()
         csv_path = args.data
-        out_path = args.output_dir
+        out_path = args.output_path
         
         tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
 
         impressions = get_impressions_from_csv(csv_path)
         new_impressions = tokenize(impressions, tokenizer)
-        with open(os.path.join(out_path, 'impressions_list'), 'w') as filehandle:
+        with open(out_path, 'w') as filehandle:
                 json.dump(new_impressions, filehandle)
