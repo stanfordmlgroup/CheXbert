@@ -63,7 +63,7 @@ After having saved the tokenized report impressions lists for the train and dev 
 python run_bert.py --train_csv={path to train reports csv} --dev_csv={path to dev reports csv} --train_imp_list={path to train impressions list} --dev_imp_list={path to dev impressions list} --output_dir={path to checkpoint saving directory}
 ```
 
-The above command will initialize BERT-base weights and then train the model. If you want to initialize the model with BlueBERT or BioBERT weights (or potentially any other pretrained weights) then you should download their checkpoints, convert them to pytorch using the HuggingFace transformers command line utility, and provide the path to the checkpoint folder in the ```PRETRAIN_PATH``` variable in ```constants.py```. Then run the above command.
+The above command will initialize BERT-base weights and then train the model. If you want to initialize the model with BlueBERT or BioBERT weights (or potentially any other pretrained weights) then you should download their checkpoints, convert them to pytorch using the HuggingFace transformers command line utility (https://huggingface.co/transformers/converting_tensorflow_models.html), and provide the path to the checkpoint folder in the ```PRETRAIN_PATH``` variable in ```constants.py```. Then run the above command.
 
 If you wish to train further from an existing CheXbert checkpoint you can run:
 
