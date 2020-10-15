@@ -51,10 +51,22 @@ python label.py -h
 
 Put all train/dev set reports in csv files under the column name "Report Impression". The labels for each of the 14 conditions should be in columns with the corresponding names, and the class labels should follow the convention described in this README.
 
-Training is a two-step process. First, you must tokenize and save all the report impressions in the train and dev sets:
+Training is a two-step process. First, you must tokenize and save all the report impressions in the train and dev sets as lists:
 
 ```
-python bert_tokenizer.py 
+python bert_tokenizer.py -d={path to train/dev reports csv} -o={path to output list}
+```
+
+After having saved the tokenized report impressions lists for the train and dev sets, you can run training as follows:
+
+```
+python run_bert.py --train_csv={path to train reports csv} --dev_csv={path to dev reports csv} --train_imp_list={path to train impressions list} --dev_imp_list={path to dev impressions list} --output_dir={path to checkpoint saving directory}
+```
+
+The above command will initialize BERT-base weights and then train the model. If you wish to train further from an existing CheXbert checkpoint you can run:
+
+```
+python run_bert.py --train_csv={path to train reports csv} --dev_csv={path to dev reports csv} --train_imp_list={path to train impressions list} --dev_imp_list={path to dev impressions list} --output_dir={path to checkpoint saving directory} --checkpoint={path to existing CheXbert checkpoint}
 ```
 
 # Label Convention
