@@ -27,6 +27,12 @@ conda activate chexbert
 
 By default, all available GPU's will be used for labeling in parallel. If there is no GPU, the CPU is used. You can control which GPU's are used by appropriately setting CUDA_VISIBLE_DEVICES. The batch size by default is 18, but can be changed inside constants.py
 
+## Checkpoint download
+
+Download our pretrained model here: https://stanfordmedicine.box.com/s/c3stck6w6dol3h36grdc97xoydzxd7w9
+
+This model was first trained on ~187,000 MIMIC-CXR radiology reports labeled by the CheXpert labeler, and then further trained on a separate set of 1000 radiologist-labeled reports from the MIMIC-CXR dataset. The MIMIC-CXR reports are deidentified and do not contain PHI. This model differs from the one in our paper, which was instead trained on radiology reports from the CheXpert dataset.
+
 ## Usage
 
 ### Label reports with CheXbert
