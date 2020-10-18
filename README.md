@@ -3,7 +3,7 @@
 
 CheXbert is an accurate, automated deep-learning based chest radiology report labeler that can label for the following 14 medical observations: Fracture, Consolidation, Enlarged Cardiomediastinum, No Finding, Pleural Other, Cardiomegaly, Pneumothorax, Atelectasis, Support Devices, Edema, Pleural Effusion, Lung Lesion, Lung Opacity
 
-Preprint: https://arxiv.org/abs/2004.09167
+Paper (Accepted to EMNLP 2020): https://arxiv.org/abs/2004.09167
 
 ## Abstract
 
