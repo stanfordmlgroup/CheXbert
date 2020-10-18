@@ -1,7 +1,7 @@
 
 # CheXbert: Combining Automatic Labelers and Expert Annotations for Accurate Radiology Report Labeling Using BERT
 
-CheXbert is an accurate, automated deep-learning based chest radiology report labeler that can label for the following 14 common medical conditions: Pneumonia, Fracture, Consolidation, Enlarged Cardiomediastinum, No Finding, Pleural Other, Cardiomegaly, Pneumothorax, Atelectasis, Support Devices, Edema, Pleural Effusion, Lung Lesion, Lung Opacity
+CheXbert is an accurate, automated deep-learning based chest radiology report labeler that can label for the following 14 medical observations: Fracture, Consolidation, Enlarged Cardiomediastinum, No Finding, Pleural Other, Cardiomegaly, Pneumothorax, Atelectasis, Support Devices, Edema, Pleural Effusion, Lung Lesion, Lung Opacity
 
 Preprint: https://arxiv.org/abs/2004.09167
 
@@ -51,7 +51,7 @@ Run the following for descriptions of all command line arguments:
 python label.py -h
 ```
 
-** Ignore any error messages about the size of the report exceeding 512 tokens. All reports are automatically cut off at 512 tokens. **
+**Ignore any error messages about the size of the report exceeding 512 tokens. All reports are automatically cut off at 512 tokens.**
 
 ### Train a model on labeled reports
 
