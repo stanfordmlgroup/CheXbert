@@ -31,7 +31,7 @@ By default, all available GPU's will be used for labeling in parallel. If there 
 
 Download our pretrained model here: https://stanfordmedicine.box.com/s/c3stck6w6dol3h36grdc97xoydzxd7w9
 
-This model was first trained on ~187,000 MIMIC-CXR radiology reports labeled by the CheXpert labeler, and then further trained on a separate set of 1000 radiologist-labeled reports from the MIMIC-CXR dataset. The MIMIC-CXR reports are deidentified and do not contain PHI. This model differs from the one in our paper, which was instead trained on radiology reports from the CheXpert dataset.
+This model was first trained on ~187,000 MIMIC-CXR radiology reports labeled by the CheXpert labeler, and then further trained on a separate set of 1000 radiologist-labeled reports from the MIMIC-CXR dataset, augmented with backtranslation. The MIMIC-CXR reports are deidentified and do not contain PHI. This model differs from the one in our paper, which was instead trained on radiology reports from the CheXpert dataset.
 
 ## Usage
 
