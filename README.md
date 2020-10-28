@@ -5,7 +5,7 @@ CheXbert is an accurate, automated deep-learning based chest radiology report la
 
 Paper (Accepted to EMNLP 2020): https://arxiv.org/abs/2004.09167
 
-Marketing Abstract (For Commercial Purposes): http://techfinder2.stanford.edu/technology_detail.php?ID=43869
+License from us (For Commercial Purposes): http://techfinder2.stanford.edu/technology_detail.php?ID=43869
 
 ## Abstract
 
