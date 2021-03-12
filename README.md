@@ -14,6 +14,13 @@ The extraction of labels from radiology text reports enables large-scale trainin
 ![The CheXbert approach](figures/chexbert.png)
 
 ## Prerequisites 
+(Recommended) Install requirements, with Python 3.7 or higher, using pip.
+
+```
+pip install -r requirements.txt
+```
+
+OR
 
 Create conda environment
 
