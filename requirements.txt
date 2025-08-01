@@ -5,3 +5,4 @@ tokenizers==0.5.2
 torch==1.4.0
 tqdm==4.38.0
 transformers==2.5.1
+statsmodels==0.14.1
